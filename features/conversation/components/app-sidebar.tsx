@@ -72,9 +72,9 @@ export function AppSidebar() {
               render={<Link href="/" />}
             >
               <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-sm text-primary-foreground">
-                C
+                I
               </span>
-              <span>ChaiGPT</span>
+              <span>InteliChat</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>

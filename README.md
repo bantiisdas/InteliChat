@@ -9,6 +9,8 @@ InteliChat is a ChatGPT-style AI chat application built with the Next.js App Rou
 ## Features
 
 - **Streaming AI chat** - responses stream token-by-token using the Vercel AI SDK (`streamText` + `useChat`).
+- **Web search** - the assistant can search the web in real time using [Exa](https://exa.ai) via AI SDK tool calling, so answers can include up-to-date information.
+- **Message branching** - edit or regenerate a message to branch the conversation into alternative paths.
 - **Persistent conversations** - every message is stored in Postgres via Prisma, so chats survive reloads.
 - **Multi-conversation management** - create, rename, pin/unpin, and delete conversations from the sidebar.
 - **Auto-generated titles** - a new chat is renamed from the first user message.
@@ -28,6 +30,7 @@ InteliChat is a ChatGPT-style AI chat application built with the Next.js App Rou
 | Database | PostgreSQL (Neon) |
 | ORM | Prisma 7 with the `@prisma/adapter-pg` driver adapter |
 | AI | Vercel AI SDK (`ai`, `@ai-sdk/openai`, `@ai-sdk/react`); default model `gpt-4o-mini` |
+| Web search | Exa (`exa-js`) exposed to the model as an AI SDK tool |
 | Data fetching / cache | TanStack React Query |
 | UI | shadcn/ui (Base UI), Tailwind CSS v4, Lucide, Sonner, Streamdown |
 | Theming | next-themes |
@@ -126,6 +129,9 @@ NEXT_PUBLIC_CLERK_SIGN_UP_FALLBACK_REDIRECT_URL="/"
 
 # OpenAI
 OPENAI_API_KEY="sk-..."
+
+# Exa (web search)
+EXA_API_KEY="your-exa-api-key"
 ```
 
 ### 3. Set up the database

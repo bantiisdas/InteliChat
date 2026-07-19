@@ -9,7 +9,7 @@ export async function onboard() {
     throw new Error("Unauthorized");
   }
 
-  const email = clerkUser.emailAddresses[0].emailAddress ?? null;
+  const email = clerkUser.emailAddresses[0]?.emailAddress ?? null;
 
   return prisma.user.upsert({
     where: { clerkId: clerkUser.id },

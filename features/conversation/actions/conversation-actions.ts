@@ -50,7 +50,7 @@ export async function createConversation(title = "New Chat") {
   return prisma.conversation.create({
     data: {
       userId: user.id,
-      title: title.trim() ?? "New Chat",
+      title: title.trim() || "New Chat",
     },
   });
 }
@@ -74,12 +74,12 @@ export async function updateConversation(
         ? { title: data.title.trim() || "New Chat" }
         : {}),
       ...(data.isPinned !== undefined ? { isPinned: data.isPinned } : {}),
-      ...(data.isarchived !== undefined ? { isPinned: data.isarchived } : {}),
+      ...(data.isarchived !== undefined ? { isarchived: data.isarchived } : {}),
     },
   });
 
   revalidatePath("/");
-  revalidatePath(`c/${conversationId}`);
+  revalidatePath(`/c/${conversationId}`);
 
   return conversation;
 }

@@ -42,11 +42,11 @@ export async function createMessage(conversationId: string, content: string) {
   const conversation = await assertOwnsconversation(conversationId, user.id);
 
   const trimedContent = content.trim();
-  if (trimedContent) {
+  if (!trimedContent) {
     throw new Error("Message cannot be empty");
   }
 
-  const message = prisma.message.create({
+  const message = await prisma.message.create({
     data: {
       conversationId,
       role: "USER",
@@ -83,7 +83,7 @@ export async function updateMessage(messageId: string, content: string) {
   const user = await requireUser();
 
   const trimedContent = content.trim();
-  if (trimedContent) {
+  if (!trimedContent) {
     throw new Error("Message cannot be empty");
   }
 

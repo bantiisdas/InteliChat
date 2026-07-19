@@ -1,4 +1,4 @@
-export const userKeys = {
+export const queryKeys = {
   conversations: {
     all: ["conversations"] as const,
     detail: (id: string) => ["conversations", id] as const,

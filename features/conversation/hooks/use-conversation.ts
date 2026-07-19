@@ -1,5 +1,7 @@
+"use client";
+
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { userKeys } from "../utils/query-keys";
+import { queryKeys } from "../utils/query-keys";
 import {
   createConversation,
   deleteConversation,
@@ -11,7 +13,7 @@ import { toast } from "sonner";
 
 export function useConversations() {
   return useQuery({
-    queryKey: userKeys.conversations.all,
+    queryKey: queryKeys.conversations.all,
     queryFn: () => listConversations(),
   });
 }
@@ -24,7 +26,7 @@ export function useCreateConversation() {
     mutationFn: (title?: string) => createConversation(title),
     onSuccess: (conversation) => {
       void queryClient.invalidateQueries({
-        queryKey: userKeys.conversations.all,
+        queryKey: queryKeys.conversations.all,
       });
       router.push(`/c/${conversation.id}`);
     },
@@ -48,11 +50,11 @@ export function useUpdateConversation() {
       isarchived?: boolean;
     }) => updateConversation(id, data),
     onSuccess: (conversation) => {
-      queryClient.invalidateQueries({
-        queryKey: userKeys.conversations.all,
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.conversations.all,
       });
-      queryClient.invalidateQueries({
-        queryKey: userKeys.conversations.detail(conversation.id),
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.conversations.detail(conversation.id),
       });
     },
     onError: (error: Error) =>
@@ -67,11 +69,11 @@ export function useDeleteConversation(activeId?: string) {
   return useMutation({
     mutationFn: (id: string) => deleteConversation(id),
     onSuccess: ({ id }) => {
-      queryClient.invalidateQueries({
-        queryKey: userKeys.conversations.all,
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.conversations.all,
       });
       queryClient.refetchQueries({
-        queryKey: userKeys.messages.byConversation(id),
+        queryKey: queryKeys.messages.byConversation(id),
       });
 
       if (activeId === id) {

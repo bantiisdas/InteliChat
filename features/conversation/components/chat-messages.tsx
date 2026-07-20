@@ -42,7 +42,23 @@ export function ChatMessages({ messages, status }: ChatMessagesProps) {
         {messages.map((message) => (
           <Message key={message.id} from={message.role}>
             <MessageContent>
-              <MessageResponse>{getMessageText(message)}</MessageResponse>
+              {/* <MessageResponse>{getMessageText(message)}</MessageResponse> */}
+
+              {message.parts.map((part, i) => {
+                if (part.type === "text") {
+                  return <MessageResponse key={i}>{part.text}</MessageResponse>;
+                }
+                if (part.type === "tool-webSearch") {
+                  return (
+                    <div key={i} className="text-xs text-muted-foreground">
+                      {part.state === "output-available"
+                        ? "Searched the web"
+                        : "Searching the web..."}
+                    </div>
+                  );
+                }
+                return null;
+              })}
             </MessageContent>
           </Message>
         ))}

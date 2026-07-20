@@ -2,6 +2,7 @@ import {
   loadChatMessages,
   saveChatMessages,
 } from "@/features/ai/actions/chat-store";
+import { webSearch } from "@/features/ai/tools/web-search";
 import { getChatModel } from "@/features/ai/utils/model";
 import { requireUser } from "@/features/auth/action/require-user";
 import { prisma } from "@/lib/db";
@@ -10,6 +11,7 @@ import {
   convertToModelMessages,
   createIdGenerator,
   createUIMessageStreamResponse,
+  stepCountIs,
   streamText,
   toUIMessageStream,
   type UIMessage,
@@ -50,6 +52,8 @@ export async function POST(req: Request) {
     system:
       conversation.systemPrompt ?? "You are InteliChat, a helpful AI Assistant",
     messages: await convertToModelMessages(messages),
+    tools: { webSearch },
+    stopWhen: stepCountIs(5),
   });
 
   result.consumeStream();

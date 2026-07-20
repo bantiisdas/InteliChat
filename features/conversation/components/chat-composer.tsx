@@ -90,7 +90,7 @@ export function ChatComposer({
         </InputGroupAddon>
       </InputGroup>
       <p className="mt-2 text-center text-xs text-muted-foreground">
-        ChaiGPT can make mistakes. Check important info.
+        InteliChat can make mistakes. Check important info.
       </p>
     </form>
   );

@@ -4,6 +4,7 @@ import {
 } from "@/features/ai/actions/chat-store";
 import { webSearch } from "@/features/ai/tools/web-search";
 import { getChatModel } from "@/features/ai/utils/model";
+import { SYSTEM_PROMPT } from "@/features/ai/utils/system-prompt";
 import { requireUser } from "@/features/auth/action/require-user";
 import { prisma } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
@@ -49,8 +50,7 @@ export async function POST(req: Request) {
 
   const result = streamText({
     model: getChatModel(conversation.model),
-    system:
-      conversation.systemPrompt ?? "You are InteliChat, a helpful AI Assistant",
+    system: conversation.systemPrompt ?? SYSTEM_PROMPT,
     messages: await convertToModelMessages(messages),
     tools: { webSearch },
     stopWhen: stepCountIs(5),

@@ -21,11 +21,9 @@ function toUIMessageParts(
   return [{ type: "text", text: content }];
 }
 
-export async function loadChatMessages(
-  conversationId: string,
-): Promise<UIMessage[]> {
+export async function loadChatMessages(branchId: string): Promise<UIMessage[]> {
   const rows = await prisma.message.findMany({
-    where: { conversationId },
+    where: { branchId },
     orderBy: { createdAt: "asc" },
   });
 
@@ -40,11 +38,17 @@ type SaveChatMessagesOptions = {
   updateTitle?: boolean;
 };
 export async function saveChatMessages(
-  conversationId: string,
+  branchId: string,
   messages: UIMessage[],
   options: SaveChatMessagesOptions = {},
 ) {
   const { updateTitle = true } = options;
+
+  const branch = await prisma.branch.findUniqueOrThrow({
+    where: { id: branchId },
+    select: { conversationId: true },
+  });
+  const conversationId = branch.conversationId;
 
   for (const message of messages) {
     if (message.role === "system") continue;
@@ -58,6 +62,7 @@ export async function saveChatMessages(
         id: message.id,
         role,
         conversationId,
+        branchId,
         status: "COMPLETE",
         content,
         parts: message.parts as Prisma.InputJsonValue,
